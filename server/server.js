@@ -68,7 +68,7 @@ async function seed() {
     const catId = (name) => catRows.find((c) => c.name === name)?.id || null;
 
     const products = [
-      ["Rainbow Cone", "Vanilla scoop with rainbow sprinkles.", 8000, "https://picsum.photos/seed/rainbowcone/640/480", 30, catId("Cones")],
+      ["Rainbow Cone", "Vanilla scoop with rainbow sprinkles.", 8000, "https://rainbowcone.com/wp-content/uploads/2024/05/rainbow_cone_header.jpg", 30, catId("Cones")],
       ["Choco Blast Cup", "Rich chocolate with choco chips.", 9000, "https://picsum.photos/seed/chococup/640/480", 25, catId("Cups")],
       ["Strawberry Sundae", "Strawberry swirl with whipped cream.", 12000, "https://picsum.photos/seed/sundae/640/480", 20, catId("Sundaes")],
       ["Mango Shake", "Creamy mango shake with sprinkles.", 11000, "https://picsum.photos/seed/mangoshake/640/480", 18, catId("Shakes")],
