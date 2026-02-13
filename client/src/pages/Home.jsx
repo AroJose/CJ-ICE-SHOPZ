@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { apiFetch } from "../api.js";
 import ProductCard from "../components/ProductCard.jsx";
 
@@ -38,9 +39,12 @@ export default function Home() {
           <p className="eyebrow">CJ Ice Shopz</p>
           <h1>Colorful scoops, happy smiles, and magical toppings.</h1>
           <p className="subhead">
-            From crunchy cones to creamy shakes, pick your favorite flavors and
-            build a rainbow of joy.
+            Explore flavors, recipes, and brand experiences with a store-quality ordering flow.
           </p>
+          <div className="chip-row">
+            <Link className="btn" to="/products">Explore Products</Link>
+            <Link className="btn btn-ghost" to="/flavor-quiz">Take Flavor Quiz</Link>
+          </div>
         </div>
         <div className="hero-card">
           <p className="eyebrow">Kids favorite</p>
@@ -75,8 +79,8 @@ export default function Home() {
         <div className="quote-strip">
           {quotes.slice(0, 2).map((q) => (
             <div key={q.id} className="quote">
-              “{q.quote_text}”
-              {q.author && <span> — {q.author}</span>}
+              "{q.quote_text}"
+              {q.author && <span> - {q.author}</span>}
             </div>
           ))}
         </div>

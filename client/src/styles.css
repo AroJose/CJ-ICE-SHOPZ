@@ -62,6 +62,7 @@ body {
   gap: 12px;
   align-items: center;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .nav a,
@@ -152,6 +153,30 @@ h1 {
 .section-title p {
   margin: 0;
   color: var(--muted);
+}
+
+.page-hero {
+  margin: 12px 0 20px;
+}
+
+.page-hero p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.toolbar {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.search {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 2px solid var(--stroke);
+  font-family: inherit;
 }
 
 .category-row {
@@ -390,6 +415,16 @@ h1 {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 14px;
   margin-bottom: 16px;
+}
+
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.quiz-result {
+  margin-top: 18px;
 }
 
 .stat-card {

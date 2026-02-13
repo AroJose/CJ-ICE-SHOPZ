@@ -33,7 +33,14 @@ export default function Navbar() {
     <header className="nav">
       <Link className="brand" to="/">CJ ICE SHOPZ</Link>
       <nav>
-        <NavLink to="/" end>Shop</NavLink>
+        <NavLink to="/" end>Home</NavLink>
+        <NavLink to="/products">Products</NavLink>
+        <NavLink to="/recipes">Recipes</NavLink>
+        <NavLink to="/experience">Experience</NavLink>
+        <NavLink to="/brands">Brands</NavLink>
+        <NavLink to="/flavor-quiz">Flavor Quiz</NavLink>
+        <NavLink to="/where-to-buy">Where to Buy</NavLink>
+        <NavLink to="/about-us">About</NavLink>
         <NavLink to="/cart">Cart ({count})</NavLink>
         <NavLink to="/orders">Orders</NavLink>
         {admin && <NavLink to="/admin">Admin</NavLink>}
