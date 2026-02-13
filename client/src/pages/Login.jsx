@@ -25,13 +25,16 @@ export default function Login() {
   };
 
   return (
-    <section>
-      <h1>Login</h1>
-      <form className="form" onSubmit={submit}>
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn" type="submit">Login</button>
-      </form>
+    <section className="auth-shell">
+      <article className="auth-card">
+        <h1>Welcome Back</h1>
+        <p className="muted">Login to track orders, manage cart, and checkout faster.</p>
+        <form className="form" onSubmit={submit}>
+          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button className="btn" type="submit">Login</button>
+        </form>
+      </article>
       {error && <p className="error">{error}</p>}
     </section>
   );

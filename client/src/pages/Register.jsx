@@ -26,14 +26,17 @@ export default function Register() {
   };
 
   return (
-    <section>
-      <h1>Register</h1>
-      <form className="form" onSubmit={submit}>
-        <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
-        <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn" type="submit">Create account</button>
-      </form>
+    <section className="auth-shell">
+      <article className="auth-card">
+        <h1>Create Account</h1>
+        <p className="muted">Register once to keep cart, orders, and invoices in one place.</p>
+        <form className="form" onSubmit={submit}>
+          <input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button className="btn" type="submit">Create account</button>
+        </form>
+      </article>
       {error && <p className="error">{error}</p>}
     </section>
   );

@@ -22,18 +22,24 @@ export default function Product() {
     window.dispatchEvent(new Event("storage"));
   };
 
-  if (!product) return <p>Loading...</p>;
+  if (!product) return <p className="muted">Loading...</p>;
 
   return (
-    <section className="product-detail">
+    <section className="page-shell">
+      <div className="page-hero">
+        <h1>Product Detail</h1>
+        <p>Customize your order with quantity and continue to checkout.</p>
+      </div>
+      <div className="product-detail">
       {error && <p className="error">{error}</p>}
       <img src={product.image_url} alt={product.name} />
-      <div>
+      <div className="panel">
         <p className="tag">{product.category_name || "Ice Cream"}</p>
-        <h1>{product.name}</h1>
+        <h2>{product.name}</h2>
         <p>{product.description}</p>
         <p className="price">{formatPrice(product.price_cents)}</p>
         <button className="btn" onClick={addToCart}>Add to cart</button>
+      </div>
       </div>
     </section>
   );

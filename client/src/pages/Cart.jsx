@@ -22,11 +22,14 @@ export default function Cart() {
   const tax = Math.round(total * 0.05);
   const grandTotal = total + tax;
 
-  if (items.length === 0) return <p>Your cart is empty.</p>;
+  if (items.length === 0) return <p className="muted">Your cart is empty.</p>;
 
   return (
-    <section>
-      <h1>Your cart</h1>
+    <section className="page-shell">
+      <div className="page-hero">
+        <h1>Your cart</h1>
+        <p>Review quantities and generate your final bill.</p>
+      </div>
       <div className="cart">
         {items.map((i) => (
           <div key={i.productId} className="cart-row">

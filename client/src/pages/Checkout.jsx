@@ -34,10 +34,12 @@ export default function Checkout() {
   };
 
   return (
-    <section>
-      <h1>Checkout</h1>
-      <p>Generate a final bill before placing your order.</p>
-      {items.length === 0 && <p>Your cart is empty.</p>}
+    <section className="page-shell">
+      <div className="page-hero">
+        <h1>Checkout</h1>
+        <p>Generate a final bill before placing your order.</p>
+      </div>
+      {items.length === 0 && <p className="muted">Your cart is empty.</p>}
       <div className="bill">
         {items.map((i) => (
           <div key={i.productId} className="bill-row">

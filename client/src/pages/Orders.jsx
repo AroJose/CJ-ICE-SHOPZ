@@ -12,7 +12,7 @@ export default function Orders() {
       .catch((err) => setError(err.message));
   }, []);
 
-  if (!getToken()) return <p>Please login to see your orders.</p>;
+  if (!getToken()) return <p className="muted">Please login to see your orders.</p>;
 
   const downloadInvoice = async (orderId) => {
     const token = localStorage.getItem("token");
@@ -33,15 +33,18 @@ export default function Orders() {
   };
 
   return (
-    <section>
-      <h1>Your orders</h1>
+    <section className="page-shell">
+      <div className="page-hero">
+        <h1>Your orders</h1>
+        <p>Track order details and download invoice PDFs.</p>
+      </div>
       {error && <p className="error">{error}</p>}
       <ul className="list">
         {orders.map((o) => (
           <li key={o.id} className="order-card">
             <div className="order-header">
               <strong>Order #{o.id}</strong>
-              <span>{formatPrice(o.total_cents)} • {o.status}</span>
+              <span>{formatPrice(o.total_cents)} | {o.status}</span>
             </div>
             <div className="order-meta">Placed on {new Date(o.created_at).toLocaleString()}</div>
             <div className="order-items">
@@ -50,7 +53,7 @@ export default function Orders() {
                   <img src={i.image_url} alt={i.name} />
                   <div>
                     <div>{i.name}</div>
-                    <div className="muted">Qty {i.qty} • {formatPrice(i.price_cents * i.qty)}</div>
+                    <div className="muted">Qty {i.qty} | {formatPrice(i.price_cents * i.qty)}</div>
                   </div>
                 </div>
               ))}
