@@ -58,10 +58,10 @@ async function seed() {
   }
 
   const productCount = await db.get("SELECT COUNT(*) as c FROM products");
-  if (!productCount || productCount.c === 0) {
+  if (!productCount || Number(productCount.c) === 0) {
     const categories = ["Cones", "Cups", "Sundaes", "Shakes", "Kids Specials"];
     for (const name of categories) {
-      await db.run("INSERT IGNORE INTO categories (name) VALUES (?)", [name]);
+      await db.run("INSERT INTO categories (name) VALUES (?) ON CONFLICT (name) DO NOTHING", [name]);
     }
 
     const catRows = await db.all("SELECT * FROM categories");
@@ -86,19 +86,19 @@ async function seed() {
   }
 
   const adCount = await db.get("SELECT COUNT(*) as c FROM ads");
-  if (!adCount || adCount.c === 0) {
+  if (!adCount || Number(adCount.c) === 0) {
     await db.run(
       "INSERT INTO ads (title, image_url, link_url, active) VALUES (?, ?, ?, ?)",
-      ["School Holiday Special", "https://picsum.photos/seed/icead1/900/420", null, 1]
+      ["School Holiday Special", "https://picsum.photos/seed/icead1/900/420", null, true]
     );
     await db.run(
       "INSERT INTO ads (title, image_url, link_url, active) VALUES (?, ?, ?, ?)",
-      ["Chocolate Week", "https://picsum.photos/seed/icead2/900/420", null, 1]
+      ["Chocolate Week", "https://picsum.photos/seed/icead2/900/420", null, true]
     );
   }
 
   const quoteCount = await db.get("SELECT COUNT(*) as c FROM quotes");
-  if (!quoteCount || quoteCount.c === 0) {
+  if (!quoteCount || Number(quoteCount.c) === 0) {
     await db.run(
       "INSERT INTO quotes (quote_text, author) VALUES (?, ?)",
       ["Life is better with extra sprinkles.", "CJ Ice Shopz"]
@@ -180,7 +180,7 @@ app.post("/api/products", adminRequired(JWT_SECRET), async (req, res) => {
   }
 
   const result = await db.run(
-    "INSERT INTO products (name, description, price_cents, image_url, stock, category_id) VALUES (?, ?, ?, ?, ?, ?)",
+    "INSERT INTO products (name, description, price_cents, image_url, stock, category_id) VALUES (?, ?, ?, ?, ?, ?) RETURNING id",
     [name, description, price_cents, image_url, stock || 0, category_id]
   );
   const product = await db.get(
@@ -271,7 +271,7 @@ app.post("/api/upload", adminRequired(JWT_SECRET), upload.single("image"), (req,
 
 // Ads
 app.get("/api/ads", async (req, res) => {
-  const items = await db.all("SELECT * FROM ads WHERE active = 1 ORDER BY id DESC");
+  const items = await db.all("SELECT * FROM ads WHERE active = TRUE ORDER BY id DESC");
   res.json(items);
 });
 
@@ -284,8 +284,8 @@ app.post("/api/ads", adminRequired(JWT_SECRET), async (req, res) => {
   const { title, image_url, link_url, active } = req.body || {};
   if (!title || !image_url) return res.status(400).json({ error: "Missing fields" });
   const result = await db.run(
-    "INSERT INTO ads (title, image_url, link_url, active) VALUES (?, ?, ?, ?)",
-    [title, image_url, link_url || null, active ? 1 : 0]
+    "INSERT INTO ads (title, image_url, link_url, active) VALUES (?, ?, ?, ?) RETURNING id",
+    [title, image_url, link_url || null, !!active]
   );
   const ad = await db.get("SELECT * FROM ads WHERE id = ?", [result.insertId]);
   res.status(201).json(ad);
@@ -299,7 +299,7 @@ app.put("/api/ads/:id", adminRequired(JWT_SECRET), async (req, res) => {
   if (title) { fields.push("title = ?"); params.push(title); }
   if (image_url) { fields.push("image_url = ?"); params.push(image_url); }
   if (link_url !== undefined) { fields.push("link_url = ?"); params.push(link_url || null); }
-  if (active !== undefined) { fields.push("active = ?"); params.push(active ? 1 : 0); }
+  if (active !== undefined) { fields.push("active = ?"); params.push(!!active); }
 
   if (fields.length === 0) return res.status(400).json({ error: "No fields to update" });
   params.push(req.params.id);
@@ -324,7 +324,7 @@ app.post("/api/quotes", adminRequired(JWT_SECRET), async (req, res) => {
   const { quote_text, author } = req.body || {};
   if (!quote_text) return res.status(400).json({ error: "Missing fields" });
   const result = await db.run(
-    "INSERT INTO quotes (quote_text, author) VALUES (?, ?)",
+    "INSERT INTO quotes (quote_text, author) VALUES (?, ?) RETURNING id",
     [quote_text, author || null]
   );
   const quote = await db.get("SELECT * FROM quotes WHERE id = ?", [result.insertId]);
@@ -367,11 +367,9 @@ app.post("/api/orders", authRequired(JWT_SECRET), async (req, res) => {
     }
 
     const orderId = await db.transaction(async (tx) => {
-      const now = new Date();
-      const createdAt = now.toISOString().slice(0, 19).replace("T", " ");
       const orderRes = await tx.run(
-        "INSERT INTO orders (user_id, total_cents, status, created_at) VALUES (?, ?, ?, ?)",
-        [req.user.id, total, "paid", createdAt]
+        "INSERT INTO orders (user_id, total_cents, status, created_at) VALUES (?, ?, ?, ?) RETURNING id",
+        [req.user.id, total, "paid", new Date()]
       );
 
       const orderId = orderRes.insertId;

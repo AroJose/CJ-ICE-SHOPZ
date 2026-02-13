@@ -1,4 +1,4 @@
-# CJ ICE SHOPZ (React + Node.js + MySQL)
+# CJ ICE SHOPZ (React + Node.js + Postgres)
 
 ## Quick Start
 
@@ -25,11 +25,12 @@ Open the Vite URL printed in the client terminal.
 
 ## Notes
 
-- MySQL is used for persistence (auto-creates DB + tables on server start).
-- Connection defaults: `root` / `root123` at `127.0.0.1:3306` with DB `mini_ecommerce`.
+- Postgres is used for persistence (auto-creates tables on server start).
+- Use `DATABASE_URL` for deployment (Render Postgres provides this).
+- Local fallback config is available via `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`.
 - Configure via `server/.env` (copy from `.env.example`).
 - CORS is enabled for local dev.
-- Checkout generates a bill and creates an order in MySQL.
+- Checkout generates a bill and creates an order in Postgres.
 - Categories and products can be added from the Admin page.
 - Image uploads are stored locally in `server/uploads` and served at `/uploads/*`.
 - Admin can edit/delete products, categories, ads, and quotes, and download invoices.
